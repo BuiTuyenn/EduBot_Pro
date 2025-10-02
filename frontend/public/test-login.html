@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login API</title>
+    <style>
+        body {
+            font-family: system-ui;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        pre {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .error {
+            color: #ef4444;
+        }
+        .success {
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Test Login API</h1>
+    
+    <div>
+        <h3>Test 1: Login với demo account</h3>
+        <button onclick="testLogin()">Test Login</button>
+        <div id="loginResult"></div>
+    </div>
+
+    <div>
+        <h3>Test 2: Check Backend Health</h3>
+        <button onclick="checkBackend()">Check Backend</button>
+        <div id="backendResult"></div>
+    </div>
+
+    <div>
+        <h3>Test 3: CORS Test</h3>
+        <button onclick="testCORS()">Test CORS</button>
+        <div id="corsResult"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080/api';
+
+        async function testLogin() {
+            const resultDiv = document.getElementById('loginResult');
+            resultDiv.innerHTML = '<p>⏳ Testing...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'nguyenvana@example.com',
+                        password: 'password123'
+                    })
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <p class="success">✅ Login thành công!</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `
+                        <p class="error">❌ Login thất bại (${response.status})</p>
+                        <pre>${errorText}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">❌ Network Error:</p>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        async function checkBackend() {
+            const resultDiv = document.getElementById('backendResult');
+            resultDiv.innerHTML = '<p>⏳ Checking...</p>';
+
+            try {
+                // Test if backend is running
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'OPTIONS'
+                });
+
+                resultDiv.innerHTML = `
+                    <p class="success">✅ Backend đang chạy</p>
+                    <p>Status: ${response.status}</p>
+                    <p>CORS Headers:</p>
+                    <pre>Access-Control-Allow-Origin: ${response.headers.get('Access-Control-Allow-Origin')}
+Access-Control-Allow-Methods: ${response.headers.get('Access-Control-Allow-Methods')}
+Access-Control-Allow-Headers: ${response.headers.get('Access-Control-Allow-Headers')}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">❌ Backend không chạy hoặc không thể kết nối</p>
+                    <pre>${error.message}</pre>
+                    <p>Hãy chắc chắn backend đang chạy tại: http://localhost:8080</p>
+                `;
+            }
+        }
+
+        async function testCORS() {
+            const resultDiv = document.getElementById('corsResult');
+            resultDiv.innerHTML = '<p>⏳ Testing CORS...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'test@test.com',
+                        password: 'wrongpassword'
+                    })
+                });
+
+                resultDiv.innerHTML = `
+                    <p class="success">✅ CORS đang hoạt động</p>
+                    <p>Origin: ${window.location.origin}</p>
+                    <p>Response status: ${response.status}</p>
+                `;
+            } catch (error) {
+                if (error.message.includes('CORS')) {
+                    resultDiv.innerHTML = `
+                        <p class="error">❌ CORS Error!</p>
+                        <p>Backend cần allow origin: ${window.location.origin}</p>
+                        <pre>${error.message}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="error">❌ Error: ${error.message}</p>
+                    `;
+                }
+            }
+        }
+
+        // Auto check backend on load
+        window.onload = () => {
+            console.log('Testing from origin:', window.location.origin);
+            checkBackend();
+        };
+    </script>
+</body>
+</html>
+

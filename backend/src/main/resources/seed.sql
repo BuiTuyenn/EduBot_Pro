@@ -1,0 +1,115 @@
+-- Seed Data for Educational Chatbot
+-- This file contains initial data for testing and training
+-- Can be deleted after training the AI model
+
+-- Insert sample universities (truong)
+INSERT INTO truong (ten, khu_vuc, website, mo_ta) VALUES
+('Đại học Quốc gia Hà Nội', 'Hà Nội', 'https://vnu.edu.vn', 'Đại học Quốc gia Hà Nội là một trong hai đại học quốc gia của Việt Nam, là trung tâm đào tạo và nghiên cứu khoa học hàng đầu.'),
+('Đại học Bách khoa Hà Nội', 'Hà Nội', 'https://hust.edu.vn', 'Trường Đại học Bách khoa Hà Nội là trường đại học kỹ thuật đa ngành và đa lĩnh vực hàng đầu Việt Nam.'),
+('Đại học Kinh tế Quốc dân', 'Hà Nội', 'https://neu.edu.vn', 'Trường Đại học Kinh tế Quốc dân là trường đại học kinh tế lớn nhất và uy tín nhất Việt Nam.'),
+('Đại học Ngoại thương', 'Hà Nội', 'https://ftu.edu.vn', 'Trường Đại học Ngoại thương là trường đại học chuyên về kinh tế đối ngoại và thương mại quốc tế.'),
+('Đại học Y Hà Nội', 'Hà Nội', 'https://hmu.edu.vn', 'Trường Đại học Y Hà Nội là cơ sở đào tạo y khoa hàng đầu tại Việt Nam.'),
+('Đại học Quốc gia TP.HCM', 'TP. Hồ Chí Minh', 'https://vnuhcm.edu.vn', 'Đại học Quốc gia TP.HCM là một trong hai đại học quốc gia của Việt Nam.'),
+('Đại học Bách khoa TP.HCM', 'TP. Hồ Chí Minh', 'https://hcmut.edu.vn', 'Trường Đại học Bách khoa TP.HCM là trường kỹ thuật hàng đầu miền Nam.'),
+('Đại học Công nghệ TP.HCM', 'TP. Hồ Chí Minh', 'https://hutech.edu.vn', 'Trường Đại học Công nghệ TP.HCM chuyên đào tạo về công nghệ và kỹ thuật.'),
+('Đại học Khoa học Tự nhiên Hà Nội', 'Hà Nội', 'https://hus.vnu.edu.vn', 'Trường Đại học Khoa học Tự nhiên, trực thuộc ĐHQG Hà Nội.'),
+('Đại học Khoa học Xã hội và Nhân văn Hà Nội', 'Hà Nội', 'https://ussh.vnu.edu.vn', 'Trường đào tạo chuyên sâu về khoa học xã hội và nhân văn.');
+
+-- Insert sample majors (nganh)
+INSERT INTO nganh (ten, ma_nganh, khoi_xet_tuyen) VALUES
+('Công nghệ thông tin', 'D480101', 'A00, A01, D01'),
+('Khoa học máy tính', 'D480101', 'A00, A01, D01'),
+('Kỹ thuật phần mềm', 'D480103', 'A00, A01, D01'),
+('An toàn thông tin', 'D480202', 'A00, A01, D01'),
+('Trí tuệ nhân tạo', 'D480108', 'A00, A01, D01'),
+('Kỹ thuật cơ khí', 'D520103', 'A00, A01'),
+('Kỹ thuật điện', 'D520201', 'A00, A01'),
+('Kỹ thuật điện tử viễn thông', 'D520207', 'A00, A01'),
+('Kinh tế học', 'D340101', 'A00, D01, D07'),
+('Quản trị kinh doanh', 'D340101', 'A00, D01, D07'),
+('Tài chính ngân hàng', 'D340201', 'A00, A01, D01'),
+('Kế toán', 'D340301', 'A00, A01, D01'),
+('Marketing', 'D340115', 'A00, D01, D07'),
+('Y khoa', 'D720101', 'B00, B08'),
+('Dược học', 'D720201', 'B00, B08, D07'),
+('Điều dưỡng', 'D720301', 'B00, B08'),
+('Luật học', 'D380101', 'C00, D01, D15'),
+('Ngôn ngữ Anh', 'D220201', 'A01, D01, D96'),
+('Quản lý đất đai', 'D850101', 'A00, A01, B00'),
+('Công nghệ sinh học', 'D420201', 'A00, B00, D07');
+
+-- Insert sample admission scores (diem_chuan)
+-- Year 2024
+INSERT INTO diem_chuan (id_truong, id_nganh, nam, diem) VALUES
+-- ĐHQG Hà Nội
+(1, 1, 2024, 28.50),
+(1, 2, 2024, 29.00),
+(1, 9, 2024, 27.50),
+-- Bách khoa Hà Nội
+(2, 1, 2024, 28.00),
+(2, 3, 2024, 27.50),
+(2, 6, 2024, 26.00),
+(2, 7, 2024, 26.50),
+(2, 8, 2024, 27.00),
+-- Kinh tế Quốc dân
+(3, 9, 2024, 26.00),
+(3, 10, 2024, 25.50),
+(3, 11, 2024, 26.50),
+(3, 12, 2024, 25.00),
+-- Ngoại thương
+(4, 9, 2024, 27.00),
+(4, 10, 2024, 26.50),
+(4, 13, 2024, 26.00),
+-- Y Hà Nội
+(5, 14, 2024, 27.00),
+(5, 15, 2024, 25.50),
+(5, 16, 2024, 24.00),
+-- ĐHQG TP.HCM
+(6, 1, 2024, 27.50),
+(6, 2, 2024, 28.00),
+-- Bách khoa TP.HCM
+(7, 1, 2024, 27.00),
+(7, 6, 2024, 25.50),
+(7, 7, 2024, 26.00);
+
+-- Year 2023
+INSERT INTO diem_chuan (id_truong, id_nganh, nam, diem) VALUES
+-- ĐHQG Hà Nội
+(1, 1, 2023, 27.50),
+(1, 2, 2023, 28.00),
+(1, 9, 2023, 26.50),
+-- Bách khoa Hà Nội
+(2, 1, 2023, 27.00),
+(2, 3, 2023, 26.50),
+(2, 6, 2023, 25.00),
+(2, 7, 2023, 25.50),
+(2, 8, 2023, 26.00),
+-- Kinh tế Quốc dân
+(3, 9, 2023, 25.00),
+(3, 10, 2023, 24.50),
+(3, 11, 2023, 25.50),
+(3, 12, 2023, 24.00),
+-- Ngoại thương
+(4, 9, 2023, 26.00),
+(4, 10, 2023, 25.50),
+(4, 13, 2023, 25.00),
+-- Y Hà Nội
+(5, 14, 2023, 26.00),
+(5, 15, 2023, 24.50),
+(5, 16, 2023, 23.00);
+
+-- Insert sample users (user)
+INSERT INTO user (ten, email, mat_khau_hash) VALUES
+('Nguyễn Văn A', 'nguyenvana@example.com', '$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6'), -- password: password123
+('Trần Thị B', 'tranthib@example.com', '$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6'),
+('Lê Văn C', 'levanc@example.com', '$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6'),
+('Admin User', 'admin@example.com', '$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6');
+
+-- Insert sample chat history (lich_su_chat)
+INSERT INTO lich_su_chat (id_user, cau_hoi, cau_tra_loi, timestamp) VALUES
+(1, 'Điểm chuẩn ngành CNTT Đại học Bách khoa Hà Nội năm 2024 là bao nhiêu?', 'Điểm chuẩn ngành Công nghệ thông tin tại Đại học Bách khoa Hà Nội năm 2024 là 28.00 điểm.', '2024-08-15 10:30:00'),
+(1, 'Cho tôi biết thông tin về Đại học Kinh tế Quốc dân', 'Trường Đại học Kinh tế Quốc dân là trường đại học kinh tế lớn nhất và uy tín nhất Việt Nam. Trường nằm ở Hà Nội. Website: https://neu.edu.vn', '2024-08-15 10:35:00'),
+(2, 'Ngành Y khoa học ở đâu?', 'Ngành Y khoa có thể học tại Đại học Y Hà Nội - một trong những cơ sở đào tạo y khoa hàng đầu tại Việt Nam.', '2024-08-16 14:20:00'),
+(2, 'Điểm chuẩn Y khoa 2024?', 'Điểm chuẩn ngành Y khoa tại Đại học Y Hà Nội năm 2024 là 27.00 điểm, khối xét tuyển B00, B08.', '2024-08-16 14:22:00'),
+(3, 'Các trường ở TP.HCM có ngành CNTT không?', 'Có nhiều trường ở TP.HCM có ngành CNTT như: Đại học Quốc gia TP.HCM, Đại học Bách khoa TP.HCM, Đại học Công nghệ TP.HCM.', '2024-08-17 09:15:00');
+

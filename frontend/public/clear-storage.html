@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Storage - EduBot</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .success {
+            color: #10b981;
+            margin-top: 1rem;
+            display: none;
+        }
+        pre {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Debug Storage</h1>
+        <p>Công cụ debug localStorage cho EduBot</p>
+        
+        <div>
+            <button onclick="showStorage()">📋 Xem Storage</button>
+            <button onclick="clearStorage()">🗑️ Xóa Storage</button>
+            <button onclick="goHome()">🏠 Về Trang Chủ</button>
+        </div>
+        
+        <div id="result"></div>
+        <div class="success" id="success">✅ Đã xóa localStorage! Vui lòng login lại.</div>
+    </div>
+
+    <script>
+        function showStorage() {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h3>📦 LocalStorage Contents:</h3>
+                <p><strong>Token:</strong></p>
+                <pre>${token ? token.substring(0, 50) + '...' : 'null'}</pre>
+                <p><strong>User:</strong></p>
+                <pre>${user ? JSON.stringify(JSON.parse(user), null, 2) : 'null'}</pre>
+            `;
+        }
+
+        function clearStorage() {
+            localStorage.clear();
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+            
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 2000);
+        }
+
+        function goHome() {
+            window.location.href = '/';
+        }
+
+        // Auto show storage on load
+        window.onload = showStorage;
+    </script>
+</body>
+</html>
+
