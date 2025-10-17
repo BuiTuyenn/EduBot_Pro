@@ -20,10 +20,10 @@ class DatabaseService:
                 collation='utf8mb4_unicode_ci'
             )
             if self.connection.is_connected():
-                print("✓ Connected to MySQL database")
+                print("[OK] Connected to MySQL database")
                 return True
         except Error as e:
-            print(f"✗ Error connecting to MySQL: {e}")
+            print(f"[ERROR] Error connecting to MySQL: {e}")
             return False
     
     def check_connection(self):

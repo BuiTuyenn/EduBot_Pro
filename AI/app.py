@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
+import sys
+import logging
 from datetime import datetime
 
 from services.intent_classifier import IntentClassifier
@@ -8,15 +10,33 @@ from services.entity_recognizer import EntityRecognizer
 from services.deepseek_client import DeepSeekClient
 from services.database import DatabaseService
 from services.response_generator import ResponseGenerator
+from config import Config
+
+# Fix encoding for Windows
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
+app.config['JSON_SORT_KEYS'] = False
 CORS(app)
 
 # Initialize services
 db_service = DatabaseService()
 intent_classifier = IntentClassifier()
 entity_recognizer = EntityRecognizer()
-deepseek_client = DeepSeekClient(api_key=os.getenv('DEEPSEEK_API_KEY', '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'))
+# Use API key from Config (no hardcoded fallback)
+deepseek_client = DeepSeekClient()
 response_generator = ResponseGenerator(db_service, deepseek_client)
 
 @app.route('/health', methods=['GET'])
@@ -80,16 +100,26 @@ def ask():
 def chat():
     """Alternative endpoint for Spring Boot backend compatibility"""
     try:
-        data = request.get_json()
+        # Force UTF-8 encoding for request data
+        data = request.get_json(force=True)
+        if data is None:
+            data = request.json
+        
         question = data.get('question', '').strip()
         user_id = data.get('user_id')
         
+        logger.info(f"📩 Received question from user {user_id}: {question}")
+        
         if not question:
+            logger.warning("Empty question received")
             return jsonify({'answer': 'Vui lòng nhập câu hỏi.'}), 400
         
         # Use the same logic as /ask
         intent = intent_classifier.classify(question)
         entities = entity_recognizer.extract(question)
+        
+        logger.info(f"🎯 Intent: {intent}, Entities: {entities}")
+        
         response_data = response_generator.generate(
             question=question,
             intent=intent,
@@ -97,18 +127,24 @@ def chat():
             user_id=user_id
         )
         
+        logger.info(f"✅ Response generated: {response_data['answer'][:100]}...")
+        
         return jsonify({
             'answer': response_data['answer']
         }), 200
         
     except Exception as e:
-        print(f"Error in /api/chat endpoint: {str(e)}")
+        logger.error(f"❌ Error in /api/chat endpoint: {str(e)}", exc_info=True)
         return jsonify({
             'answer': 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau.'
         }), 500
 
 if __name__ == '__main__':
-    print("Starting Educational Chatbot AI Service...")
-    print("Server running on http://localhost:5000")
+    logger.info("="*70)
+    logger.info("🚀 Starting Educational Chatbot AI Service...")
+    logger.info("🌐 Server running on http://localhost:5000")
+    logger.info("📊 Database: " + ("✅ Connected" if db_service.check_connection() else "❌ Disconnected"))
+    logger.info("🔑 DeepSeek API: Configured")
+    logger.info("="*70)
     app.run(host='0.0.0.0', port=5000, debug=True)
 

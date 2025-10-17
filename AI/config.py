@@ -12,7 +12,7 @@ class Config:
     DB_NAME = os.getenv('DB_NAME', 'edu_chatbot')
     
     # DeepSeek API Configuration
-    DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', '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')
+    DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', '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')
     DEEPSEEK_API_URL = os.getenv('DEEPSEEK_API_URL', 'https://openrouter.ai/api/v1/chat/completions')
     DEEPSEEK_MODEL = 'deepseek/deepseek-chat'
     
