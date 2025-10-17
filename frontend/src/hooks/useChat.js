@@ -125,7 +125,7 @@ export const useChat = () => {
       setIsLoading(false);
       abortControllerRef.current = null;
     }
-  }, []);
+  }, [sessionId]);
 
   // Retry last message
   const retryLastMessage = useCallback(() => {

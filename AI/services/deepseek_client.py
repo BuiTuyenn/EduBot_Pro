@@ -55,7 +55,16 @@ Hãy trả lời bằng tiếng Việt, ngắn gọn, súc tích và thân thi�
                 answer = result['choices'][0]['message']['content']
                 return answer.strip()
             else:
-                print(f"DeepSeek API error: {response.status_code} - {response.text}")
+                error_msg = f"DeepSeek API error: {response.status_code} - {response.text}"
+                print(error_msg)
+                
+                # Return helpful fallback based on status code
+                if response.status_code == 401:
+                    return "API key không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra cấu hình."
+                elif response.status_code == 402:
+                    return "Tài khoản đã hết credits. Vui lòng nạp thêm tại OpenRouter."
+                elif response.status_code == 429:
+                    return "Quá nhiều requests. Vui lòng thử lại sau."
                 return None
                 
         except Exception as e:
